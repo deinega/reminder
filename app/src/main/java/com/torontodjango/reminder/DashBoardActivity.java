@@ -196,11 +196,10 @@ public class DashBoardActivity extends AppCompatActivity implements TasksFragmen
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 int id = item.getItemId();
-                Class fragmentClass;
+                Class fragmentClass = TasksFragment.class;
                 switch(id)
                 {
                     case R.id.dashboard:
-                        fragmentClass = TasksFragment.class;
                         Log.d(TAG, "Choosing tasks");
                         break;
                     case R.id.help:
@@ -209,9 +208,10 @@ public class DashBoardActivity extends AppCompatActivity implements TasksFragmen
                         //Intent intent = new Intent(getBaseContext(), HelpActivity.class);
                         //DashBoardActivity.this.startActivity(intent);
                         break;
-                    default:
-                        fragmentClass = TasksFragment.class;
-                        Log.d(TAG, "Choosing default");
+                    case R.id.exit:
+                        finish();
+                        moveTaskToBack(true);
+                        break;
                 }
                 switchFragment(fragmentClass);
 

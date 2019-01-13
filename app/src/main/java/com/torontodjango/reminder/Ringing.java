@@ -29,7 +29,7 @@ public class Ringing extends Activity {
         public void run()
         {
             Log.d(TAG, "PalyTimerTask.run()");
-            addNotification(task);
+            //addNotification(task);
             finish();
         }
     }

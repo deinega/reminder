@@ -26,8 +26,8 @@ public class TasksFragment extends Fragment {
         taskList = (ListView)view.findViewById(R.id.task_list);
         TaskListAdapter taskListAdapter = listener.getTaskListAdapter();
         taskList.setAdapter(taskListAdapter);
-        taskList.setOnItemClickListener(listOnItemClickListener); // making it editable
-        registerForContextMenu(taskList); // choese edit or delete
+        //taskList.setOnItemClickListener(listOnItemClickListener); // making it editable
+        registerForContextMenu(taskList); // choose edit or delete
 
         return view;
     }
