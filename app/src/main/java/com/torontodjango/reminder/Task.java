@@ -11,19 +11,17 @@ import android.content.Context;
 
 public class Task implements Comparable<Task>{
 
-    private Context context;
     private long id;
     private String name;
-    private long date;
+    private long date; // start date
     private boolean enabled;
-    private long occurence;
+    private long occurence; // next alarm date
 
     // used while populating intent
     private String prefix = "com.torontodjango.task";
 
-    public Task(Context context)
+    public Task()
     {
-        this.context = context;
         id = 0;
         name = "";
         date = System.currentTimeMillis();
@@ -72,11 +70,6 @@ public class Task implements Comparable<Task>{
         this.enabled = enabled;
     }
 
-    public void update()
-    {
-        occurence = date;
-    }
-
     public void toIntent(Intent intent)
     {
         intent.putExtra(prefix + ".id", id);
@@ -84,6 +77,12 @@ public class Task implements Comparable<Task>{
         intent.putExtra(prefix + ".date", date);
         intent.putExtra(prefix + ".enabled", enabled);
         intent.putExtra(prefix + ".occurence", occurence);
+    }
+
+    // reserved for the case if there are multiple alarms for the same task
+    public void update()
+    {
+        occurence = date;
     }
 
     public void fromIntent(Intent intent)
@@ -96,7 +95,7 @@ public class Task implements Comparable<Task>{
         update();
     }
 
-    // reserved for multiple tasks
+    // reserved for multiple alarms for the same task
     public long getNextOccurence()
     {
         return occurence;
@@ -142,7 +141,7 @@ public class Task implements Comparable<Task>{
         name = dis.readUTF();
         date = dis.readLong();
         enabled = dis.readBoolean();
-        occurence = dis.readInt();
+        occurence = dis.readLong();
         update();
     }
 }

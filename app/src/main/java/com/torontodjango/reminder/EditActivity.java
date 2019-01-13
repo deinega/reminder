@@ -47,16 +47,16 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        Log.i(TAG, "getting view values");
+        Log.d(TAG, "getting view values");
 
         name = (EditText)findViewById(R.id.name);
         enabled = (CheckBox)findViewById(R.id.enabled);
         dateButton = (Button)findViewById(R.id.date_button);
         timeButton = (Button)findViewById(R.id.time_button);
 
-        Log.i(TAG, "got view values");
+        Log.d(TAG, "got view values");
 
-        task = new Task(this);
+        task = new Task();
         task.fromIntent(getIntent());
 
         name.setText(task.getName());
@@ -192,9 +192,9 @@ public class EditActivity extends AppCompatActivity {
     private void updateButtons()
     {
         dateButton.setText(DAO.formatDate(task));
-        Log.i(TAG, "updated date button");
+        Log.d(TAG, "updated date button");
         timeButton.setText(DAO.formatTime(task));
-        Log.i(TAG, "updated time button");
+        Log.d(TAG, "updated time button");
     }
 
 }

@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Happy Reminder</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="help">Simply add, edit and delete your reminders. If you have any questions, go have a beer.</string>
 </resources>

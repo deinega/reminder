@@ -13,6 +13,6 @@ public class BootCompletedReceiver extends BroadcastReceiver
     public void onReceive(Context context, Intent intent)
     {
         Log.d(TAG, "onReceive");
-        new TaskListAdapter(context);
+        //new TaskListAdapter(context);
     }
 }

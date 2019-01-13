@@ -6,8 +6,14 @@ import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarDrawerToggle;import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -20,6 +26,7 @@ import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 
 class TaskListAdapter extends BaseAdapter{
@@ -130,7 +137,7 @@ class TaskListAdapter extends BaseAdapter{
         PendingIntent sender;
         Intent intent;
 
-        Log.i(TAG, "Setting task to alarm at " + task.getDate() + (task.getEnabled() ? " enabled" : "") + (task.getOutdated() ? " outdated" : ""));
+        Log.d(TAG, "Setting task to alarm at " + task.getDate() + (task.getEnabled() ? " enabled" : "") + (task.getOutdated() ? " outdated" : ""));
 
         if (task.getEnabled() && !task.getOutdated())
         {
@@ -144,15 +151,17 @@ class TaskListAdapter extends BaseAdapter{
     private void cancelTask(Task task){
 
     }
-
 }
 
 
-public class DashBoardActivity extends AppCompatActivity {
+public class DashBoardActivity extends AppCompatActivity implements TasksFragment.OnFragmentInteractionListener{
 
     private final String TAG = "DashBoardActivity";
 
-    private ListView taskList;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
+
     private TaskListAdapter taskListAdapter;
     private Task currentTask;
 
@@ -165,25 +174,94 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.i(TAG, "starting dashboard activity");
+        Log.d(TAG, "starting dashboard activity");
+
+        taskListAdapter = new TaskListAdapter(this);
+        currentTask = null;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
-        taskListAdapter = new TaskListAdapter(this);
-        taskList = (ListView)findViewById(R.id.task_list);
-        taskList.setAdapter(taskListAdapter);
-        taskList.setOnItemClickListener(listOnItemClickListener); // making it editable
-        registerForContextMenu(taskList); // choese edit or delete
+        drawerLayout = (DrawerLayout)findViewById(R.id.activity_main);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.open, R.string.close);
 
-        currentTask = null;
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        navigationView = (NavigationView)findViewById(R.id.nv);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                int id = item.getItemId();
+                Class fragmentClass;
+                switch(id)
+                {
+                    case R.id.dashboard:
+                        fragmentClass = TasksFragment.class;
+                        Log.d(TAG, "Choosing tasks");
+                        break;
+                    case R.id.help:
+                        fragmentClass = HelpFragment.class;
+                        Log.d(TAG, "Choosing help");
+                        //Intent intent = new Intent(getBaseContext(), HelpActivity.class);
+                        //DashBoardActivity.this.startActivity(intent);
+                        break;
+                    default:
+                        fragmentClass = TasksFragment.class;
+                        Log.d(TAG, "Choosing default");
+                }
+                switchFragment(fragmentClass);
+
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
+        switchFragment(TasksFragment.class);
+
+    }
+
+    void switchFragment(Class fragmentClass){
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        }
+        catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.tasksfragment, fragment).commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(toggle.onOptionsItemSelected(item))
+            return true;
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public TaskListAdapter getTaskListAdapter(){
+        return taskListAdapter;
+    }
+
+    public void onFragmentInteraction(int position){
+        Intent intent = new Intent(getBaseContext(), EditActivity.class);
+
+        currentTask = taskListAdapter.getItem(position);
+        currentTask.toIntent(intent);
+        DashBoardActivity.this.startActivityForResult(intent, EDIT_ACTIVITY);
     }
 
     public void onAddClick(View view)
     {
         Intent intent = new Intent(getBaseContext(), EditActivity.class);
 
-        currentTask = new Task(this);
+        currentTask = new Task();
         currentTask.toIntent(intent);
 
         DashBoardActivity.this.startActivityForResult(intent, NEW_ACTIVITY);

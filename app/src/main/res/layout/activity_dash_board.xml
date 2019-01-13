@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingTop="4sp"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".DashBoardActivity">
 
-    <Button
-        style="@style/widget"
-        android:id="@+id/add_task"
-        android:text="New Task"
-        android:onClick="onAddClick" />
+    <FrameLayout
+        android:id="@+id/tasksfragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-    <ListView
-        style="@style/widget"
-        android:id="@+id/task_list" />
+    <android.support.design.widget.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/nav_menu"
+        app:headerLayout="@layout/nav_header"
+        android:id="@+id/nv">
 
-</LinearLayout>
+    </android.support.design.widget.NavigationView>
+
+</android.support.v4.widget.DrawerLayout>

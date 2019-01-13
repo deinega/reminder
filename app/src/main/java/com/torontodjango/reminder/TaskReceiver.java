@@ -16,10 +16,10 @@ public class TaskReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        Log.i(TAG, "onReceive");
+        Log.d(TAG, "onReceive");
 
         Intent newIntent = new Intent(context, Ringing.class);
-        Task task = new Task(context);
+        Task task = new Task();
         task.fromIntent(intent);
         task.toIntent(newIntent);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -31,7 +31,7 @@ public class DAO {
 
     public static synchronized DAO getInstance(Context context)
     {
-        Log.i(TAG, "getting DAO instance");
+        Log.d(TAG, "getting DAO instance");
         if (dao == null)
         {
             dao = new DAO();
@@ -47,7 +47,7 @@ public class DAO {
         nextId = 1;
         try
         {
-            Log.i(TAG, "reading file");
+            Log.d(TAG, "reading file");
 
             FileInputStream fileInputStream = context.openFileInput(DATA_FILE_NAME);
             DataInputStream dis = new DataInputStream(fileInputStream);
@@ -57,7 +57,7 @@ public class DAO {
 
             for (int i = 0; i < size; i++)
             {
-                Task task = new Task(context);
+                Task task = new Task();
                 task.deserialize(dis);
                 list.add(task);
             }
@@ -66,14 +66,14 @@ public class DAO {
         }
         catch (IOException e)
         {
-            Log.i(TAG, "Cant load tasks");
+            Log.d(TAG, "Cant load tasks");
         }
     }
 
     public void save(){
         try
         {
-            Log.i(TAG, "saving file");
+            Log.d(TAG, "saving file");
 
             DataOutputStream dos = new DataOutputStream(context.openFileOutput(DATA_FILE_NAME, Context.MODE_PRIVATE));
 
@@ -86,7 +86,7 @@ public class DAO {
             dos.close();
         } catch (IOException e)
         {
-            Log.i(TAG, "Cant save tasks");
+            Log.d(TAG, "Cant save tasks");
         }
     }
 

@@ -28,7 +28,7 @@ public class Ringing extends Activity {
         @Override
         public void run()
         {
-            Log.i(TAG, "PalyTimerTask.run()");
+            Log.d(TAG, "PalyTimerTask.run()");
             addNotification(task);
             finish();
         }
@@ -58,7 +58,7 @@ public class Ringing extends Activity {
 
         textView = (TextView)findViewById(R.id.name);
 
-        playTime = (long)3000;
+        playTime = (long)30000;
         ringtone = RingtoneManager.getRingtone(getApplicationContext(), Settings.System.DEFAULT_RINGTONE_URI);
 
         start(getIntent());
@@ -74,9 +74,9 @@ public class Ringing extends Activity {
 
     private void start(Intent intent)
     {
-        Log.i(TAG, "Start ringing...");
+        Log.d(TAG, "Start ringing...");
 
-        task = new Task(this);
+        task = new Task();
         task.fromIntent(intent);
 
         textView.setText(task.getName());
@@ -89,7 +89,7 @@ public class Ringing extends Activity {
 
     private void stop()
     {
-        Log.i(TAG, "Stop ringing...");
+        Log.d(TAG, "Stop ringing...");
         timer.cancel();
         ringtone.stop();
     }
@@ -137,7 +137,7 @@ public class Ringing extends Activity {
 
         notificationManager.notify((int)task.getId(), notification);
 
-        Log.i(TAG, "notification added");
+        Log.d(TAG, "notification added");
     }
 
 }

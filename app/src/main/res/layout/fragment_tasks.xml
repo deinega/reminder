@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingTop="4sp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        style="@style/widget"
+        android:id="@+id/add_task"
+        android:text="New Task"
+        android:onClick="onAddClick" />
+
+    <ListView
+        style="@style/widget"
+        android:id="@+id/task_list" />
+
+</LinearLayout>
