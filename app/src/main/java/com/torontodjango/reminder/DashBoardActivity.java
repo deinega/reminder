@@ -267,6 +267,25 @@ public class DashBoardActivity extends AppCompatActivity implements TasksFragmen
         DashBoardActivity.this.startActivityForResult(intent, NEW_ACTIVITY);
     }
 
+    public void onEditClick(View view){
+        View parentRow = (View) view.getParent();
+        ListView listView = (ListView) parentRow.getParent().getParent();
+        final int position = listView.getPositionForView(parentRow);
+
+        Intent intent = new Intent(getBaseContext(), EditActivity.class);
+        currentTask = taskListAdapter.getItem(position);
+        currentTask.toIntent(intent);
+        startActivityForResult(intent, EDIT_ACTIVITY);
+    }
+
+    public void onDeleteClick(View view){
+        View parentRow = (View) view.getParent();
+        ListView listView = (ListView) parentRow.getParent().getParent();
+        final int position = listView.getPositionForView(parentRow);
+        taskListAdapter.delete(position);
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
